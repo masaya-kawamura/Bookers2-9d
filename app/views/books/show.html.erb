@@ -1,0 +1,70 @@
+<%= render 'searches/search' %>
+<div class='container'>
+  <div class='row'>
+    <div class='col-md-3'>
+      <h2>User info</h2>
+      <%= render 'users/info', user: @user %>
+      <h2 class="mt-3">New book</h2>
+      <%= render 'books/form', book: @newbook %>
+    </div>
+
+    <!--ここからリスト-->
+    <div class='col-md-8 offset-md-1'>
+  		<h2>Book detail</h2>
+  		<table class='table'>
+  		  <tr>
+  		    <td><%= link_to user_path(@book.user) do %>
+            <%= attachment_image_tag(@book.user, :profile_image, :fill, 100, 100, fallback: "no-image-icon.jpg") %><br>
+            <%= @book.user.name %>
+            <% end %>
+          </td>
+          <td><%= link_to @book.title, book_path(@book) %></td>
+          <td><%= @book.body %></td>
+          <td id="favorites_btn_<%= @book.id %>">
+            <%= render 'favorites/favorite', book: @book %>
+          </td>
+          <td id="comments_count">
+            <%= render 'comments/count', book: @book %>
+          </td>
+          <td>閲覧数：<%= @book.impressionist_count(:filter=>:session_hash) %></td>
+          
+          <!--ここからレビュー表示-->
+          <td>
+            <div id="rate_<%= @book.id %>"></div>
+            <script>
+              $('#rate_<%= @book.id %>').raty({
+                size: 20,
+                starOff:  '<%= asset_path('star-off.png') %>',
+                starOn : '<%= asset_path('star-on.png') %>',
+                starHalf: '<%= asset_path('star-half.png') %>',
+                half: true,
+                readOnly: true,
+                score: <%= @book.rate %>,
+              });
+            </script>
+          </td>
+          <!--ここまでレビュー表示-->
+          
+          <% if @book.user == current_user %>
+          <td><%= link_to 'Edit', edit_book_path(@book), class: "btn btn-sm btn-success edit_book_#{@book.id}" %></td>
+          <td><%= link_to 'Destroy', book_path(@book), method: :delete, data: { confirm: '本当に消しますか？' }, class: "btn btn-sm btn-danger destroy_book_#{@book.id}"%></td>
+          <% end %>
+        </tr>
+      </table>
+      
+      <!--ここからコメント-->
+      <div id="book_comment">
+        <%= render 'comments/index', book: @book %>
+      </div>
+      <!--ここまでコメント-->
+      
+      <!--ここからコメント投稿フォーム-->
+        <%= form_with model:[@book, @comment], remote: true do |f| %>
+          <%= f.text_area :comment,  class:"form-control" %><br/>
+          <%= f.submit '送信' %>
+        <% end %>
+      <!--ここまで投稿フォーム-->
+      
+    </div>
+  </div>
+</div>

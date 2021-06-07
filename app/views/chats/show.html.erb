@@ -1,0 +1,16 @@
+<div class="container">
+  <div class="row">
+    <div class="col-sm-10 col-md-8">
+      <table class="table table-borderless">
+        <h4><%= @user.name %> さんとのチャット</h4>
+          <dev id="chat_log">
+            <%= render 'chats/index', chats: @chats %>
+          </dev>
+      </table>
+      <%= form_with model: @chat, remote: true do |f| %>
+        <%= f.text_field :message, autofocus: true %>
+        <%= f.hidden_field :room_id %>
+      <% end %>
+          </div>
+        </div>
+      </div>

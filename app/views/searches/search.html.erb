@@ -1,0 +1,42 @@
+<%= render 'searches/search' %>
+<table class="table teble-hover table-inverce">
+  <% if @range == 'User' %>
+      <tr>
+        <th></th>
+        <th>Name</th>
+        <th>Introduction</th>
+      </tr>
+    <tbody>
+      <% @users.each do |user| %>
+        <tr>
+          <td>
+            <%= link_to user_path(user) do %>
+              <%= attachment_image_tag user, :profile_image, format: 'jpeg', fallback:'no_image.jpg', size:'40x40' %>
+            <% end %>
+          </td>
+          <td><%= user.name %></td>
+          <td><%= user.introduction %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  <% else %>
+      <tr>
+        <th></th>
+        <th>Title</th>
+        <th>Opinion</th>
+      </tr>
+    <tbody>
+      <% @books.each do |book| %>
+        <tr>
+          <td>
+            <%= link_to user_path(book.user) do %>
+              <%= attachment_image_tag book.user, :profile_image, format:'jpeg', fallback:'no_image.jpg', size:'40x40' %>
+            <% end %>
+          </td>
+          <td><%= link_to book.title, book_path(book) %></td>
+          <td><%= book.body %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  <% end %>
+</table>

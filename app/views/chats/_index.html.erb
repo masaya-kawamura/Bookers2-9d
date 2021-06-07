@@ -1,0 +1,7 @@
+<% @chats.each do |chat| %>
+  <tr>
+    <td class="<%= "text-right" if chat.user == current_user %>">
+      <%= chat.message %>
+    </td>
+  </tr>
+<% end %>

@@ -1,0 +1,30 @@
+<table class='table'>
+  <tr><%= attachment_image_tag user, :profile_image, :fill, 100, 100, fallback: "no_image.jpg" %></tr>
+  <tr>
+	  <th>name</th>
+	  <th><%= user.name %></th>
+  </tr>
+  <tr>
+	  <th>introduction</th>
+	  <th><%= user.introduction %></th>
+  </tr>
+  <tr>
+    <th>follows</th>
+    <th><%= link_to user.following.count, following_user_path(user) %></th>
+  </tr>
+  <tr>
+    <th>followers</th>
+    <th><%= link_to user.followers.count, followers_user_path(user) %></th>
+  </tr>
+</table>
+
+<div>
+  <% unless user == current_user %>
+    <%= render 'relationships/follow_form', user: user %>
+      <% if current_user.following.exists?(id: user.id) && user.following.exists?(id: current_user.id) %>
+        <%= link_to 'chatを始める', chat_path(user.id), class:"text-secondary" %>
+      <% end %>
+  <% else %>
+    <%= link_to '',edit_user_path(user),class: "btn btn-outline-secondary btn-block fas fa-user-cog edit_user_#{user.id}" %>
+  <% end %>
+</div>
